@@ -1,0 +1,366 @@
+openapi: 3.0.3
+info:
+  title: Zoona Backend API Server
+  version: 1.0.0
+
+servers:
+  - url: https://localhost/api/v1
+
+paths:
+  /animals:
+    post:
+      tags:
+        - "Animal"
+      summary: Adding new animal data
+      description: To add new animal data into the database
+      operationId: postAnimal
+      requestBody:
+        description: Create new animal
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                latinName:
+                  type: string
+                region:
+                  type: string
+                status:
+                  type: string
+                description:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+            encoding:
+              image:
+                contentType: image/png, image/jpeg
+      responses:
+        "200":
+          description: Success to create new animal data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 1
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Success to create new animal data
+        "400":
+          description: Response body not match
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 0
+                  code:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Response body not match
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 0
+                  code:
+                    type: number
+                    example: 500
+                  message:
+                    type: string
+                    example: Response body not match
+    get:
+      tags:
+        - "Animal"
+      summary: Get all animal preview data
+      description: Getting all animal display data from servers
+      operationId: getAnimal
+      parameters:
+        - name: pages
+          in: path
+          description: Pages of animal to return
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Success get animal data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 1
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Success get all animals data
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        name:
+                          type: string
+                          example: Jalak Bali
+                        region:
+                          type: string
+                          example: Bali
+                        status:
+                          type: string
+                          example: Endanger
+                        latinName:
+                          type: string
+                          example: Leucopsar rothschildi
+                        image:
+                          type: string
+                          example: /image/1
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 0
+                  code:
+                    type: number
+                    example: 500
+                  message:
+                    type: string
+                    example: Response body not match
+
+  /animals/{pages}:
+    get:
+      tags:
+        - "Animal"
+      summary: Get all animal preview data per pages
+      description: Getting all animal pages display data from servers
+      operationId: getAnimal
+      parameters:
+        - name: pages
+          in: path
+          description: Pages of animal to return
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Success get animal data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 1
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Success get pages data animal
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        name:
+                          type: string
+                          example: Jalak Bali
+                        region:
+                          type: string
+                          example: Bali
+                        status:
+                          type: string
+                          example: Endanger
+                        latinName:
+                          type: string
+                          example: Leucopsar rothschildi
+                        image:
+                          type: string
+                          example: /image/1
+
+  /animal/{id}:
+    get:
+      tags:
+        - "Animal"
+      summary: Get animal by id
+      description: Get animal by id
+      operationId: getAnimalById
+      parameters:
+        - name: id
+          in: path
+          description: ID of animal to return
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Success get animal data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 0
+                  code:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Response body not match
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 1
+                      image:
+                        type: string
+                        example: /image/1
+                      name:
+                        type: string
+                        example: Jalak Bali
+                      region:
+                        type: string
+                        example: Bali
+                      status:
+                        type: string
+                        example: Endanger
+                      latinName:
+                        type: string
+                        example: Leucopsar rothschildi
+                      description:
+                        type: string
+                        example: Jalak Bali adalah ...
+
+  /animal/popular:
+    get:
+      tags:
+        - "Animal"
+      summary: Get all animal popular preview data
+      description: Getting all popular animal display data from servers
+      operationId: getAnimal
+      responses:
+        "200":
+          description: Success get popular animal data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 0
+                  code:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Response body not match
+                  data:
+                    type: array
+                    maxItems: 8
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        name:
+                          type: string
+                          example: Jalak Bali
+                        region:
+                          type: string
+                          example: Bali
+                        status:
+                          type: string
+                          example: Endanger
+                        latinName:
+                          type: string
+                          example: Leucopsar rothschildi
+                        image:
+                          type: string
+                          example: /image/1
+
+  /animal/random:
+    get:
+      tags:
+        - "Animal"
+      summary: Get all animal random preview data
+      description: Getting all random animal display data from servers
+      operationId: getAnimal
+      responses:
+        "200":
+          description: Success get popular animal data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 0
+                  code:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Response body not match
+                  data:
+                    type: array
+                    maxItems: 8
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 1
+                        name:
+                          type: string
+                          example: Jalak Bali
+                        region:
+                          type: string
+                          example: Bali
+                        status:
+                          type: string
+                          example: Endanger
+                        latinName:
+                          type: string
+                          example: Leucopsar rothschildi
+                        image:
+                          type: string
+                          example: /image/1
