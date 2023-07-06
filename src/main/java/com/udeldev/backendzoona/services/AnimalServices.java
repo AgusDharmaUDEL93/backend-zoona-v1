@@ -39,7 +39,7 @@ public class AnimalServices {
         }
 
         animalRepositories.save(animalEntity);
-        return new ResponsNoData(1, 200, "Success to create new animal data");
+        return new ResponsNoData(1, 201, "Success to create new animal data");
     }
 
     public byte[] getImageById(Long id) {

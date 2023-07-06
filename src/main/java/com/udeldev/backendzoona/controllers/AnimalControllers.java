@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
@@ -37,10 +38,23 @@ public class AnimalControllers {
             @RequestParam("region") String region,
             @RequestParam("status") String status,
             @RequestParam("description") String description,
-            @RequestParam("image") MultipartFile image) throws IOException {
+            @RequestParam("image") MultipartFile image,
+            @RequestParam(name = "api_key", required = false) String api_key) throws IOException {
+        ResponsNoData response;
 
-        ResponsNoData response = animalServices.saveData(name, latinName, region, status, description, image);
-        return ResponseEntity.ok().body(response);
+        if (api_key == null) {
+            response = new ResponsNoData(0, 400, "Please insert the api_key");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (api_key.equals("kelompok3")) {
+            response = animalServices.saveData(name, latinName, region, status, description, image);
+        } else {
+            response = new ResponsNoData(0, 403, "Cannot insert data");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
+
+        return ResponseEntity.created(null).body(response);
     }
 
     @GetMapping(path = "/animals")
